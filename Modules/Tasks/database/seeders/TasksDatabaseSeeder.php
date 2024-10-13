@@ -12,6 +12,6 @@ class TasksDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(TaskSeeder::class);
-        $this->call(TaskUserStatusSeeder::class);
+        $this->call(TaskAssignmentSeeder::class);
     }
 }

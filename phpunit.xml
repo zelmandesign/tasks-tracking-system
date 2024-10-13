@@ -11,11 +11,27 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="Modules">
+            <directory>./Modules/*/Tests/Feature</directory>
+            <directory>./Modules/*/Tests/Unit</directory>
+        </testsuite>
     </testsuites>
+
     <source>
         <include>
             <directory>app</directory>
+            <directory suffix=".php">./Modules</directory>
         </include>
+
+        <exclude>
+            <!-- Exclude things that don't need test coverage -->
+            <directory suffix=".php">Modules/Tasks/database</directory>   <!-- Migrations, factories, seeders -->
+            <directory suffix=".php">Modules/Tasks/resources</directory>  <!-- Views -->
+            <directory suffix=".php">Modules/Tasks/config</directory>     <!-- Config files -->
+            <directory suffix=".php">Modules/Tasks/routes</directory>     <!-- Route files -->
+            <directory suffix=".php">Modules/Tasks/app/Models</directory> <!-- Models (if no logic needs testing) -->
+            <directory suffix=".php">Modules/Tasks/tests</directory> <!-- Models (if no logic needs testing) -->
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>

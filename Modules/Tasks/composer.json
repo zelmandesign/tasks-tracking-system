@@ -19,7 +19,8 @@
         "psr-4": {
             "Modules\\Tasks\\": "app/",
             "Modules\\Tasks\\Database\\Factories\\": "database/factories/",
-            "Modules\\Tasks\\Database\\Seeders\\": "database/seeders/"
+            "Modules\\Tasks\\Database\\Seeders\\": "database/seeders/",
+            "Modules\\Tasks\\tests\\": "tests/"
         }
     },
     "autoload-dev": {

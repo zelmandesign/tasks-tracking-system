@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Tasks\Http\Controllers\TasksController;
+use Modules\Tasks\app\Http\Controllers\TasksController;
+use Modules\Tasks\app\Http\Controllers\TaskAssignmentController;
+use Modules\Tasks\app\Http\Controllers\TaskStatusController;
+use Modules\Tasks\app\Http\Controllers\TaskUserController;
 
 /*
  *--------------------------------------------------------------------------
@@ -16,15 +19,26 @@ use Modules\Tasks\Http\Controllers\TasksController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::apiResource('tasks', TasksController::class)->names('tasks');
-});
+    // TaskController CRUD Routes
+    Route::prefix('tasks')->group(function () {
+        // Typical CRUD routes
+        Route::get('/', [TasksController::class, 'index'])->name('tasks.index'); // Get all tasks
+        Route::get('/{id}', [TasksController::class, 'show'])->name('tasks.show'); // Get a specific task
+        Route::post('/', [TasksController::class, 'store'])->name('tasks.store'); // Create a new task
+        Route::put('/{id}', [TasksController::class, 'update'])->name('tasks.update'); // Update a task
+        Route::delete('/{id}', [TasksController::class, 'destroy'])->name('tasks.destroy'); // Delete a task
 
-//GET     /api/tasks                  # Get all tasks
-//GET     /api/tasks/{id}             # Get specific task by ID
-//POST    /api/tasks                  # Create a new task
-//PUT     /api/tasks/{id}             # Update a task
-//DELETE  /api/tasks/{id}             # Delete a task
-//GET     /api/users/{userId}/tasks   # Get all tasks for a user
-//POST    /api/tasks/{taskId}/assign  # Assign task to a user
-//PUT     /api/tasks/{taskId}/status  # Update task status
-//DELETE  /api/tasks/{taskId}/unassign# Unassign task from a user
+        // Assign and Unassign Tasks
+        Route::post('{taskId}/assign', [TaskAssignmentController::class, 'assignTask'])->name('tasks.assign');
+        Route::delete('{taskId}/unassign', [TaskAssignmentController::class, 'unassignTask'])->name('tasks.unassign');
+
+        // Task Status
+        Route::put('{taskId}/status', [TaskStatusController::class, 'updateStatus'])->name('tasks.updateStatus');
+    });
+
+    // TaskUserController Routes for tasks related to a user
+    Route::prefix('users/{userId}/tasks')->group(function () {
+        Route::get('assigned', [TaskUserController::class, 'getUserAssignedTasks'])->name('users.tasks.assigned');
+        Route::get('created', [TaskUserController::class, 'getUserCreatedTasks'])->name('users.tasks.created');
+    });
+});
