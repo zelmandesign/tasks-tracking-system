@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Tasks\app\Http\Controllers\TaskNotificationController;
 use Modules\Tasks\app\Http\Controllers\TasksController;
 use Modules\Tasks\app\Http\Controllers\TaskAssignmentController;
 use Modules\Tasks\app\Http\Controllers\TaskStatusController;
@@ -41,4 +42,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('assigned', [TaskUserController::class, 'getUserAssignedTasks'])->name('users.tasks.assigned');
         Route::get('created', [TaskUserController::class, 'getUserCreatedTasks'])->name('users.tasks.created');
     });
+
+    Route::post('/notify', [TaskNotificationController::class, 'notifyUser']);
 });
